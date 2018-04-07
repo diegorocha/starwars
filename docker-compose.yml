@@ -1,0 +1,19 @@
+version: '2.0'
+services:
+  node:
+    image: node:9.11-alpine
+    links:
+      - mongo
+    volumes:
+      - "./starwars:/usr/src/app/starwars"
+      - "./package.json:/usr/src/app/package.json"
+      - "./package-lock.json:/usr/src/app/package-lock.json"
+      - "./bin:/usr/src/app/bin"
+      - "./entrypoint.sh:/usr/src/entrypoint.sh"
+    working_dir: /usr/src/app
+    ports:
+      - "3000:3000"
+    entrypoint: ["/usr/src/entrypoint.sh"]
+    env_file: ./.env
+  mongo:
+    image: "mongo:3.7"
