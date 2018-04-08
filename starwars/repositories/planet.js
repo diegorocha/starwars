@@ -4,6 +4,34 @@ const SWApiService = require('../services/swapi');
 
 class PlanetRepository{
 
+    static findAll(page, callback){
+        let perPage = 5;
+        MongoRepository.connect();
+        return Planet
+            .find({})
+            .skip((perPage * page) - perPage)
+            .limit(perPage)
+            .exec((err, results) => {
+                let planets = [];
+                if(results){
+                    planets = results.map(planet => {
+                        delete planet._doc.__v;
+                        return SWApiService.getApperancesByName(planet.name).then(value => {
+                            planet._doc.appearances = value;
+                            return planet;
+                        }, () => {
+                            return planet;
+                        });
+                    });
+                    Promise.all(planets).then(values => {
+                        callback(err, values);
+                    });
+                }else{
+                    callback(err, planets);
+                }
+            });
+    }
+
     static findOne(filter, callback){
         MongoRepository.connect();
         return Planet.findOne(filter, '-__v', (err, planet) => {
