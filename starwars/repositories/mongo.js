@@ -1,34 +1,17 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 
-class MongoConnection {
-
-    static async getConnection(){
-        // Connection URL
-        const url = process.env.MONGO_URL;
-        const dbName = process.env.MONGO_DB;
-        let client;
-        try {
-            client = await MongoClient.connect(url);
-            const db = client.db(dbName);
-            return {client, db};
-        } catch (err) {
-            console.log(err.stack);
-        }
-        this.close(client);
+class MongoRepository{
+    static _getUri(){
+        return process.env.MONGO_URL;
     }
 
-    static close(client){
-        if (client) {
-            client.close();
-        }
+    static async getConnection() {
+        return await mongoose.createConnection(this._getUri());
     }
 
-    static async testConnection(){
-        let {client, db} = await this.getConnection();
-        this.close(client);
-        return db !== undefined;
+    static connect(){
+        return mongoose.connect(this._getUri());
     }
-
 }
 
-module.exports = MongoConnection;
+module.exports = MongoRepository;

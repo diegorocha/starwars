@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
 var healthRouter = require('./routes/health');
+var planetsRouter = require('./routes/planets');
 
 var app = express();
 
@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/api/', indexRouter);
+app.use('/api/planets', planetsRouter);
 app.use('/', healthRouter);
 
 // catch 404 and forward to error handler
