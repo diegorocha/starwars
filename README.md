@@ -8,6 +8,14 @@ Para facilitar a execução no ambiente de desenvolvimento foi criado um arquivo
 
 É preciso ter o docker e docker-compose instalados.
 
+Gerar o arquivo .env com as variáveis de ambiente do container da aplicação
+
+```
+cp env-sample .env
+```
+
+O arquivo env-sample foi deixado como exemplo das variáveis que precisam ser preenchidas.
+
 Iniciando ambiente de desenvolvimento:
 ```
 docker-compose up
