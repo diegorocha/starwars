@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const autoIncrement = require('mongoose-auto-increment');
 
 const MongoRepository = require('../repositories/mongo');
-
+const config = require('../config');
 
 const PlanetSchema = new Schema({
     name: {
@@ -26,7 +26,9 @@ async function initializeAutoIncrement () {
         autoIncrement.initialize(connection);
         PlanetSchema.plugin(autoIncrement.plugin, 'Planet');
     } catch (e) {
-        console.log("Error initializing auto increment", e);
+        if(!config.isTesting()){
+            console.log("Error initializing auto increment", e);
+        }
     }
 }
 

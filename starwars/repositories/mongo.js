@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
+const config = require('../config');
 
 class MongoRepository{
     static _getUri(){
-        return process.env.MONGO_URL;
+        return config.MONGO_URL;
     }
 
     static async getConnection() {

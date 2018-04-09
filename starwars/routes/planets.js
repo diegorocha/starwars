@@ -9,7 +9,10 @@ router.get('/', function(req, res, next) {
 
 /* List all */
 router.get('/page/:page?', function(req, res, next) {
-    let page = parseInt(req.params.page) || 1;
+    let page = Number(req.params.page || 1);
+    if(page < 1){
+        return res.sendStatus(404);
+    }
     PlanetRepository.findAll(page, (err, planets) => {
         if(err){
             return next(err)
